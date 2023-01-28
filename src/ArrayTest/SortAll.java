@@ -88,7 +88,13 @@ public class SortAll {
     }
 
     /**快速排序
-     * 时间复杂度：O(N * logN)
+     * 时间复杂度：
+     * 最好情况下：O(N * logN)
+     * 最坏情况下：数据有序 单分支的树O(N^2)
+     * 因为存在递归，需要保存数据
+     * 空间复杂度：O(logN)
+     * 最坏情况下：单只树 O(N)
+     * 不稳定
      * 1、Hoare法
      */
     public static int fastSort1(int []arr,int left,int right){
@@ -113,7 +119,7 @@ public class SortAll {
     public static int wakenSort(int []arr,int left,int right){
         int tmp = arr[left];
         while (left < right){
-            while (left < right && arr[right] >= tmp){
+            while (left < right && arr[right] >= tmp){//这里不能落下这个等号，否则就陷入死循环了
                 right--;
             }
             arr[left] = arr[right];
@@ -126,10 +132,20 @@ public class SortAll {
         return left;
     }
 
+    public static void quick(int []arr,int left,int right){
+        if(left >= right){
+            return;
+        }
+        int pivot = wakenSort(arr,left,right);
+        quick(arr,left,pivot-1);
+        quick(arr,pivot+1,right);
+    }
+
     /**
      * 堆排序 时间复杂度;O(N * logN)
      * 空间复杂度：O(1)
      * 不稳定：跳跃式交换
+     * 不受数据有序无序的限制
      * 面试写堆排序，就是写一个调整的过程
      */
     public static void heapSort(int[]arr){
@@ -162,6 +178,51 @@ public class SortAll {
             }
         }
     }
+
+    /**
+     * 归并排序
+     */
+    public static void MergeSort(int[] array) {
+        mergeSortChild(array,0,array.length-1);
+    }
+
+    private static void mergeSortChild(int[] array,int left,int right) {
+        if(left == right) {
+            return;
+        }
+        int mid = (left+right) / 2;
+        mergeSortChild(array,left,mid);
+        mergeSortChild(array,mid+1,right);
+        //合并
+        merge(array,left,mid,right);
+    }
+
+    private static void merge(int[] array,int left,int mid,int right) {//归并
+        int s1 = left;
+        int e1 = mid;
+        int s2 = mid+1;
+        int e2 = right;
+        int[] tmpArr = new int[right-left+1];
+        int k = 0;//表示tmpArr 的下标
+        while (s1 <= e1  && s2 <= e2) {
+            if(array[s1] <= array[s2]) {
+                tmpArr[k++] = array[s1++];
+            }else{
+                tmpArr[k++] = array[s2++];
+            }
+        }
+        while (s1 <= e1) {
+            tmpArr[k++] = array[s1++];
+        }
+        while (s2 <= e2) {
+            tmpArr[k++] = array[s2++];
+        }
+        //tmpArr当中 的数据 是right  left 之间有序的数据
+        for (int i = 0; i < k; i++) {
+            array[i+left] = tmpArr[i];
+        }
+    }
+
 
     public static void main(String[] args) {
         int []arr = {1,3,56,47,23,42,27};
