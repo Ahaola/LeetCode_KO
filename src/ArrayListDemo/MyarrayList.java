@@ -67,5 +67,4 @@ public class MyarrayList {
             throw new AddIndexException("add元素的时候,pos位置不合法！");
         }
     }
-
 }
