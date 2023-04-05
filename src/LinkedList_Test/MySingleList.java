@@ -115,4 +115,62 @@ public class MySingleList {
         return cur;
     }
 
+
+    /**
+     * 删除链表中第一次出现元素的值等于key的节点
+     */
+    public void DelayKey(int key){
+        if(head == null){
+            return;
+        }
+        if(head.val == key){
+            head = head.next;
+            return;
+        }
+        Node cur = findProverKey(key);
+        if(cur == null){
+            System.out.println("没有你要找的数字！");
+            return;
+        }
+        Node del = cur.next;
+        cur.next = del.next;
+    }
+
+
+    /**
+     * 找前驱
+     */
+    public Node findProverKey(int key){
+        Node cur = head;
+        while (cur.next != null){
+            if(cur.next.val == key){
+                return cur;
+            }
+            cur = cur.next;
+        }
+        return null;
+    }
+
+    /**
+     * 删除链表中所有元素值等于key的节点
+     */
+    public void removeAllKey(int key){
+        if(head == null){
+            return;
+        }
+        Node prev = findProverKey(key);
+        Node cur = prev.next;
+        while (cur != null){
+            if(cur.val == key){
+                prev.next = cur.next;
+                cur = cur.next;
+            }else{
+                prev = cur;
+                cur = cur.next;
+            }
+        }
+        if(head.val == key){
+            head = head.next;
+        }
+    }
 }
