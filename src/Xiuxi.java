@@ -1,5 +1,7 @@
 public class Xiuxi {
     public static void main(String[] args) {
-        System.out.println("休息……");
+        String a = new String("hello");
+        String b = new String("hello");
+        System.out.println(a == b);
     }
 }
